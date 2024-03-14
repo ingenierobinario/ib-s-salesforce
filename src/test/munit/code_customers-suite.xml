@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="code_customers-suite.xml" />
+	<munit:test name="get:\customers\(id):ib-s-salesforce-config-test" doc:id="a989dcd8-0e84-4628-b0b5-e85d6e35edec" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when query result from salesforce" doc:id="26b4da22-b340-451c-a640-c21e1631bb05" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/java &#10;---&#10; [&#10;  {&#10;    Email: "juan.perez@gmail.com",&#10;    FirstName: "Juan",&#10;    Phone: "+34 1234567890",&#10;    Id: "003WU000001qydpYAA",&#10;    LastName: "Pérez",&#10;    "type": "Contact"&#10;  }&#10;]]' mediaType="application/java" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Attributes" doc:id="2d31f519-c11a-4236-8c40-7420e9482dcb" >
+				<munit:attributes value='#[{&#10;        headers : {&#10;        &#10;        &#10;        	"x-correlation-id": "c6ee714a-4422-4c9a-9e2c-81fd63cf8afc",&#10;        	"x-source-system": "test-localhost"	&#10;        },&#10;        &#10;        uriParams: {&#10;        	&#10;        	id: "003WU000001qydpYAA"&#10;        }&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get:\customers\(id):ib-s-salesforce-config" doc:id="b056320d-bc28-49b5-8923-b4d4fbc1f699" name="get:\customers\(id):ib-s-salesforce-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert customer response" doc:id="07ce25d9-95b4-4c3e-964e-f4dd19b31d37" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getcustomersidibssalesforceconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get:\customers\(id):ib-s-salesforce-config-test\error" doc:id="8cffb8d7-d6e5-430b-8e05-6fd947d7ac04" >
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when error connecting to Salesforce" doc:id="8f5a5087-fcc5-4dae-9f9a-3d673111007d" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="SALESFORCE:CONNECTIVITY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Attributes" doc:id="daf3aa8e-a31c-40f7-a279-f1ca07c6e484" >
+				<munit:attributes value='#[{&#10;        headers : {&#10;        &#10;        &#10;        	"x-correlation-id": "c6ee714a-4422-4c9a-9e2c-81fd63cf8afc",&#10;        	"x-source-system": "test-localhost"	&#10;        },&#10;        &#10;        uriParams: {&#10;        	&#10;        	id: "003WU000001qydpYAA"&#10;        }&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get:\customers\(id):ib-s-salesforce-config" doc:id="bf076fa5-d48f-4b40-a260-80104d649e33" name="get:\customers\(id):ib-s-salesforce-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call error logger" doc:id="b94332cf-39c9-4769-bab6-33555e04ab91" processor="logger">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="error trying to get customer into salesforce" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
