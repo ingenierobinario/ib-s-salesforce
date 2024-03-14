@@ -43,7 +43,7 @@ jobs:
           name: artifacts
           path: target/*.jar
         
-  deploy-cloudhub:
+  deploy-mule-standalone:
     needs: build-artifact
     runs-on: ubuntu-latest
     steps:    
