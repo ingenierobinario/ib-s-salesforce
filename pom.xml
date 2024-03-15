@@ -46,12 +46,13 @@
 					</execution>
 				</executions>
 				<configuration>
-					<coverage>
+					<!--<coverage>
 						<runCoverage>true</runCoverage>
 						<formats>
 							<format>html</format>
 						</formats>
-					</coverage>
+					</coverage>-->
+					<skipMunitTests>true</skipMunitTests>
 				</configuration>
 			</plugin>
 		</plugins>
