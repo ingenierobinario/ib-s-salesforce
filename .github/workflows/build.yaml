@@ -71,8 +71,9 @@ jobs:
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
         MULE_STANDALONE_DIR: ${{ secrets.MULE_STANDALONE_DIR }}
       run: |
-        # Instala el cliente SSH
+        # Install ssh client
         sudo apt-get update && sudo apt-get install -y openssh-client sshpass
-        
+        # Find artifact 
+        artifactName=$(ls *.jar | head -1)
         # Usa sshpass y SCP para copiar el artefacto al servidor Mule Standalone
-        sshpass -p "${SSH_PASSWORD}" scp -o StrictHostKeyChecking=no -P $SSH_PORT ./target/*.jar $SSH_USERNAME@$SSH_HOST:$MULE_STANDALONE_DIR/apps/
+        sshpass -p "${SSH_PASSWORD}" scp -o StrictHostKeyChecking=no -P $SSH_PORT $artifactName $SSH_USERNAME@$SSH_HOST:$MULE_STANDALONE_DIR/apps/
