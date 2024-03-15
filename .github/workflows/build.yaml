@@ -75,4 +75,4 @@ jobs:
         sudo apt-get update && sudo apt-get install -y openssh-client sshpass
         
         # Usa sshpass y SCP para copiar el artefacto al servidor Mule Standalone
-        sshpass -p "${SSH_PASSWORD}" scp -o StrictHostKeyChecking=no -P $SSH_PORT ./target/my-application*.jar $SSH_USERNAME@$SSH_HOST:$MULE_STANDALONE_DIR/apps/
+        sshpass -p "${SSH_PASSWORD}" scp -o StrictHostKeyChecking=no -P $SSH_PORT ./target/*.jar $SSH_USERNAME@$SSH_HOST:$MULE_STANDALONE_DIR/apps/
