@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.mycompany</groupId>
+	<groupId>com.ingenierobinario</groupId>
 	<artifactId>ib-s-salesforce</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>mule-application</packaging>
 
 	<name>ib-s-salesforce</name>
@@ -71,13 +71,6 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>ecfc2f1a-8db5-4db2-bd67-d1576aac835d</groupId>
-			<artifactId>ib-s-salesforce</artifactId>
-			<version>1.0.0</version>
-			<classifier>raml</classifier>
-			<type>zip</type>
-		</dependency>
-		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-apikit-module</artifactId>
 			<version>1.9.2</version>
@@ -128,6 +121,13 @@
 			<classifier>mule-domain</classifier>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>57b8640c-936c-4178-9adf-bd515ec313d0</groupId>
+			<artifactId>ib-s-salesforce</artifactId>
+			<version>1.0.0</version>
+			<classifier>raml</classifier>
+			<type>zip</type>
+		</dependency>
 	</dependencies>
 
 	<repositories>
@@ -143,6 +143,16 @@
 			<url>https://repository.mulesoft.org/releases/</url>
 			<layout>default</layout>
 		</repository>
+		<repository>
+	        <id>github</id>
+	        <name>GitHub OWNER Apache Maven Packages</name>
+	        <url>https://maven.pkg.github.com/OWNER/REPOSITORY</url>
+    	</repository>
+    	<repository>
+		    <id>github</id>
+		    <name>Ingeniero Binario Mule Domain</name>
+		    <url>https://maven.pkg.github.com/ingenierobinario/ingenierobinario-domain</url>
+  		</repository>
 	</repositories>
 
 	<pluginRepositories>
