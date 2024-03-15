@@ -29,7 +29,7 @@ jobs:
     - name: Test with Maven
       env:
         GB_USER: ${{ secrets.GB_USER }}
-        GB_PASSWORD: ${{ secrets.GB_PASSWORD }
+        GB_PASSWORD: ${{ secrets.GB_PASSWORD }}
       run: mvn test --settings ./settings.xml
   build-artifact:
     needs: test-artifact
