@@ -14,8 +14,8 @@ jobs:
     env:
       USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
       PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-      GITHUB_USER: ${{ secrets.GB_USER }}
-      GITHUB_PASSWORD: ${{ secrets.GB_PASSWORD }}
+      GB_USER: ${{ secrets.GB_USER }}
+      GB_PASSWORD: ${{ secrets.GB_PASSWORD }}
     steps:
     - name: Checkout this repo
       uses: actions/checkout@v4
