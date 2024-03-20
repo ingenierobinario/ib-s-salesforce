@@ -9,5 +9,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 	<salesforce:sfdc-config name="Salesforce_Configuration" doc:name="Salesforce Config" doc:id="4e688a7f-41cf-4b8b-8c67-1e8011decf00" >
 		<salesforce:basic-connection username="alexander.deroui@ingenierobinario.com" password="05Coord$1993" securityToken="dVz7QKO1yql42lhPuANoFYct" url="https://login.salesforce.com/services/Soap/u/59.0"/>
 	</salesforce:sfdc-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="6d2090a0-1f57-42c2-b75b-bb8c22a2fb38" file="config\${env}-properties.yaml" />
+	<global-property doc:name="Global Property" doc:id="99b47392-dbb0-4cba-a3fa-30db3972994f" name="env" value="sandbox" />
 	
 </mule>

@@ -1,0 +1,8 @@
+#salesforce connection
+
+
+salesforce:
+  username: "alexander.deroui@ingenierobinario.com"
+  password: "05Coord$1993" 
+  token: "dVz7QKO1yql42lhPuANoFYct"
+  url: "https://login.salesforce.com/services/Soap/u/59.0"
