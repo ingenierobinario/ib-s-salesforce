@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	
+	  <flow name="get:\customers\(id):ib-s-salesforce-config">
+        <ee:transform doc:name="varInitialData">
+            <ee:message>
+            </ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dw\varInitialData.dwl" variableName="varInitialData" />
+			</ee:variables>
+        
+</ee:transform>
+		<logger level="INFO" doc:name="START - get customers by id" doc:id="be09ead4-1e71-420c-9cff-a765588e6903" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	&#10;	message: "starting get customers by id to salesforce",&#10;	content: vars.varInitialData&#10;}]'/>
+		<salesforce:query doc:name="Query" doc:id="ba9868d2-854c-40c6-a0a0-92977e7d4197" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[SELECT Id, FirstName, LastName, Email, Phone FROM Contact WHERE Id = ':customerId']]></salesforce:salesforce-query>
+			<salesforce:parameters ><![CDATA[#[output application/java
+---
+{
+	customerId : vars.varInitialData.customerId
+}]]]></salesforce:parameters>
+		</salesforce:query>
+		<ee:transform doc:name="response" doc:id="89c4f1c5-b36f-434b-914c-309d38dc8c11" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"FirstName": payload[0].FirstName,
+	"LastName": payload[0].LastName,
+	"Email": payload[0].Email
+}
+	]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="END - get customers by id" doc:id="5b6b9147-2b65-4938-8690-bb323795098b" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	&#10;	message: "get customer by id successfully from salesforce",&#10;	content: vars.varInitialData,&#10;	results: payload&#10;	&#10;}]'/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="6592658b-050e-4e21-816a-0049ea6a5df2" type="ANY">
+				<logger level="ERROR" doc:name="error trying to get customer into salesforce" doc:id="7f0a49c0-a52d-47ec-9ffc-3e91484780a6" message="#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	content: vars.varInitialData,&#10;	error: error&#10;}]"/>
+				<ee:transform doc:name="error message" doc:id="8dee8b9e-aff2-4172-936c-bd2effe78ae4" >
+					<ee:message >
+						<ee:set-payload resource="dw\error-generic-response.dwl" />
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+    
+</flow>
+    <flow name="post:\customers:application\json:ib-s-salesforce-config">
+		<ee:transform doc:name="varInitialData" doc:id="d83d38bc-ce48-4339-ac2a-a1e8e4664579" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable resource="dw\varInitialData-post.dwl" variableName="varInitialData" />
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="START - post customers" doc:id="2a436a27-e0bb-494c-9c1d-37bb73a6c0e9" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	&#10;	message: "starting post customers to salesforce",&#10;	content: vars.varInitialData&#10;}]' />
+		<ee:transform doc:name="salesforce account" doc:id="4ec8a18f-a19e-4b0b-ba09-1366742632f6" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	content:[
+		
+		FirstName: payload.name,
+		LastName: payload.surname,
+		Email: payload.email,
+		Phone: payload.phone
+	]
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:create type="Contact" doc:name="Create contact" doc:id="1164dc26-af80-43b7-80af-fcd3fb68fb21" config-ref="Salesforce_Config">
+			<salesforce:records ><![CDATA[#[payload.content]]]></salesforce:records>
+		</salesforce:create>
+		<ee:transform doc:name="Transform Message" doc:id="c4dae5e7-f075-43a7-937b-2a6bef171b36" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "customer processed successfully",
+	"values" : vars.varInitialData
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="END - post customers" doc:id="94e3948a-391e-41b2-a488-64eb11aea8e2" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	&#10;	message: "post customers successfully into salesforce",&#10;	content: vars.varInitialData&#10;}]' />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5ef8c285-ad53-4b9d-bba6-0d763894c48d" type="ANY">
+				<logger level="ERROR" doc:name="error trying to post customer into salesforce" doc:id="8c21ebcc-95f2-49f2-987f-ee48a1d82537" message="#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	content: vars.varInitialData,&#10;	error: error&#10;}]" />
+				<ee:transform doc:name="error message" doc:id="a6746e41-283e-4342-a5ce-bbf235b94925" >
+					<ee:message >
+						<ee:set-payload resource="dw\error-generic-response.dwl" />
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+    
+</flow>
+	
+	</mule>

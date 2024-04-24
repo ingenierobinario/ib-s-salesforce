@@ -1,0 +1,32 @@
+{
+  "headers": {
+    "x-source-system": "SHOPIFY",
+    "x-correlation-id": "cb0327ce-c9dc-4052-8815-69149df65f74",
+    "x-idempotency-key": "d2c36290-5b60-488a-b72b-1002450ad396",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.37.3",
+    "accept": "*/*",
+    "cache-control": "no-cache",
+    "postman-token": "359953ee-1552-4530-b658-c41b34ead5cc",
+    "host": "localhost:8081",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive",
+    "content-length": "248"
+  },
+  "clientCertificate": null,
+  "method": "POST",
+  "scheme": "http",
+  "queryParams": {},
+  "requestUri": "/api/customers",
+  "queryString": "",
+  "version": "HTTP/1.1",
+  "maskedRequestPath": "/customers",
+  "listenerPath": "/api/*",
+  "relativePath": "/api/customers",
+  "localAddress": "/127.0.0.1:8081",
+  "uriParams": {},
+  "rawRequestUri": "/api/customers",
+  "rawRequestPath": "/api/customers",
+  "remoteAddress": "/127.0.0.1:53055",
+  "requestPath": "/api/customers"
+}
