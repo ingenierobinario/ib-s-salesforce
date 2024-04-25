@@ -1,0 +1,7 @@
+#salesforce properties
+
+salesforce: 
+  username: "alexander.deroui@ingenierobinario.com"
+  password: "![r7P0lzzEaBr1zXUBgZyoAQ==]"
+  token: "bXQKdwv1UdKVjceTPPu0KxqM8"
+  url: "https://login.salesforce.com/services/Soap/u/59.0"
