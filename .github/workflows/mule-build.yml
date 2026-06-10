@@ -1,0 +1,25 @@
+name: Mule Build
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "**" ]
+    paths: [ "src/**", "pom.xml" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - name: Build (mvn clean package)
+        run: mvn -B clean package
+      - name: Upload artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mule-app
+          path: target/*.jar
