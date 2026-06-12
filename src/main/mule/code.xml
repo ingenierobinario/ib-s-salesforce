@@ -8,6 +8,7 @@
         <ee:set-variable resource="dw\varInitialData.dwl" variableName="varInitialData"/>
       </ee:variables>
     </ee:transform>
+    <logger level="INFO" doc:name="START - get customers by id" doc:id="be09ead4-1e71-420c-9cff-a765588e6903" message="#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10; &#10; message: &quot;starting get customers by id to salesforce&quot;,&#10; content: vars.varInitialData&#10;}]"/>
     <salesforce:query doc:name="Query" doc:id="ba9868d2-854c-40c6-a0a0-92977e7d4197" config-ref="Salesforce_Config">
       <salesforce:salesforce-query><![CDATA[SELECT Id, FirstName, LastName, Email, Phone FROM Contact WHERE Id = ':customerId']]></salesforce:salesforce-query>
       <salesforce:parameters><![CDATA[#[output application/java
@@ -16,7 +17,6 @@
 	customerId : vars.varInitialData.customerId
 }]]]></salesforce:parameters>
     </salesforce:query>
-    <logger level="INFO" doc:name="START - get customers by id" doc:id="be09ead4-1e71-420c-9cff-a765588e6903" message="#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10; &#10; message: &quot;starting get customers by id to salesforce&quot;,&#10; content: vars.varInitialData&#10;}]"/>
     <ee:transform doc:name="response" doc:id="89c4f1c5-b36f-434b-914c-309d38dc8c11">
       <ee:message>
         <ee:set-payload><![CDATA[%dw 2.0
